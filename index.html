@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PasarKita — Marketplace Produk UMKM Indonesia</title>
+  <meta name="description" content="PasarKita adalah marketplace produk UMKM Indonesia yang modern, bersih, aman dengan Rekening Bersama (Escrow), ongkir otomatis Biteship, dan pembayaran Midtrans.">
+  
+  <!-- Google Font Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: '#006B2C',
+              container: '#00873A'
+            },
+            secondary: {
+              DEFAULT: '#006D30',
+              container: '#92F5A4',
+              fixed: '#95F8A7'
+            },
+            tertiary: '#466252',
+            surface: {
+              DEFAULT: '#FAF8FF',
+              container: {
+                lowest: '#FFFFFF',
+                low: '#F2F3FF',
+                DEFAULT: '#EAEDFF',
+                high: '#E2E7FF'
+              }
+            },
+            'on-surface': {
+              DEFAULT: '#131B2E',
+              variant: '#3E4A3D'
+            },
+            outline: {
+              DEFAULT: '#6E7B6C',
+              variant: '#BDCABA'
+            },
+            error: {
+              DEFAULT: '#BA1A1A',
+              container: '#FFDAD6'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col bg-surface text-on-surface font-sans antialiased">
+
+  <!-- ======================================================== -->
+  <!-- A. HEADER MULTI-LAYER (Seksi 6.A Skill Desain) -->
+  <!-- ======================================================== -->
+  <header class="sticky top-0 z-40 bg-surface-container-lowest/95 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
+    <!-- 1. Bar Info Lokasi & Peran Pengguna -->
+    <div class="bg-surface-container-low text-[11px] text-on-surface-variant border-b border-outline-variant/20 px-4 py-1.5">
+      <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-xs text-primary">location_on</span>
+          <span>Kirim ke: <strong>Bandung Wetan, Kota Bandung</strong></span>
+          <span class="text-outline">|</span>
+          <span class="text-primary font-semibold">Bebas Ongkir Biteship Tersedia</span>
+        </div>
+        
+        <!-- Switcher Peran Demo (Sangat membantu untuk simulasi penilaian dosen) -->
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-on-surface">Pilih Peran Demo:</span>
+          <button onclick="navigateTo('home')" class="nav-role-btn px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-primary text-white">
+            🛍️ Pembeli
+          </button>
+          <button onclick="navigateTo('seller-dashboard')" class="nav-role-btn px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-surface-container hover:bg-primary/20 text-on-surface">
+            🏪 Penjual (Seller)
+          </button>
+          <button onclick="navigateTo('admin-panel')" class="nav-role-btn px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-surface-container hover:bg-primary/20 text-on-surface">
+            🛡️ Admin Platform
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Area Utama Header -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-6">
+      <!-- Logo PasarKita -->
+      <a href="javascript:void(0)" onclick="navigateTo('home')" class="flex items-center gap-2.5 text-decoration-none group flex-shrink-0">
+        <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-sm group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-2xl">storefront</span>
+        </div>
+        <div>
+          <span class="text-xl font-bold tracking-tight text-primary leading-none block">PasarKita</span>
+          <span class="text-[10px] text-on-surface-variant tracking-wider uppercase font-semibold">Produk UMKM Lokal</span>
+        </div>
+      </a>
+
+      <!-- Pencarian Utama Menoljol -->
+      <div class="flex-1 max-w-2xl relative">
+        <div class="relative flex items-center">
+          <span class="material-symbols-outlined absolute left-3.5 text-outline text-xl pointer-events-none">search</span>
+          <input id="search-input" type="text" placeholder="Cari kopi gayo, kain tenun, sambal roa, tas anyaman bambu..." class="w-full pl-11 pr-4 py-2.5 rounded-xl bg-surface-container-low border border-outline-variant/50 focus:border-primary focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm transition-all text-on-surface placeholder:text-outline">
+        </div>
+      </div>
+
+      <!-- Icon Aksi Navigasi (Chat, Notifikasi, Keranjang) -->
+      <div class="flex items-center gap-3">
+        <!-- Chat Penjual -->
+        <button onclick="openChatModal()" title="Obrolan / Pesan" class="p-2.5 rounded-xl hover:bg-surface-container text-on-surface transition-colors relative">
+          <span class="material-symbols-outlined text-2xl">chat</span>
+        </button>
+
+        <!-- Pesanan Saya -->
+        <button onclick="navigateTo('orders')" title="Pesanan Saya" class="p-2.5 rounded-xl hover:bg-surface-container text-on-surface transition-colors relative">
+          <span class="material-symbols-outlined text-2xl">receipt_long</span>
+        </button>
+
+        <!-- Keranjang -->
+        <button onclick="navigateTo('cart')" title="Keranjang Belanja" class="p-2.5 rounded-xl hover:bg-surface-container text-on-surface transition-colors relative">
+          <span class="material-symbols-outlined text-2xl text-primary">shopping_cart</span>
+          <span id="cart-badge" class="absolute -top-1 -right-1 bg-error text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">1</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. Navigasi Chip Kategori Horisontal -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-2.5 overflow-x-auto scrollbar-none flex items-center gap-2">
+      <button data-cat="all" class="category-chip px-3.5 py-1.5 rounded-full text-xs font-semibold bg-primary text-white whitespace-nowrap transition-all shadow-sm">
+        Semua Produk
+      </button>
+      <button data-cat="kopi" class="category-chip px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface-container hover:bg-secondary-container/40 text-on-surface whitespace-nowrap transition-all">
+        ☕ Kopi Nusantara
+      </button>
+      <button data-cat="kain" class="category-chip px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface-container hover:bg-secondary-container/40 text-on-surface whitespace-nowrap transition-all">
+        🧵 Kain & Tenun Tradisional
+      </button>
+      <button data-cat="kuliner" class="category-chip px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface-container hover:bg-secondary-container/40 text-on-surface whitespace-nowrap transition-all">
+        🌶️ Kuliner Khas Daerah
+      </button>
+      <button data-cat="kerajinan" class="category-chip px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface-container hover:bg-secondary-container/40 text-on-surface whitespace-nowrap transition-all">
+        🪵 Kerajinan Anyaman & Kayu
+      </button>
+      <button data-cat="fashion" class="category-chip px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface-container hover:bg-secondary-container/40 text-on-surface whitespace-nowrap transition-all">
+        👘 Batik Solo & Fashion
+      </button>
+      <button data-cat="herbal" class="category-chip px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface-container hover:bg-secondary-container/40 text-on-surface whitespace-nowrap transition-all">
+        🍯 Madu & Herbal Alami
+      </button>
+    </div>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- KONTEN DINAMIS UTAMA (BERDASARKAN APP_STATE.currentView) -->
+  <!-- ======================================================== -->
+  <main class="flex-1">
+
+    <!-- 1. VIEW HOME (BERANDA & KATALOG) -->
+    <section id="view-home" class="view-section">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+        
+        <!-- B. HERO & BANNER PROMOSI (Grid 8/12 dan 4/12 Desktop) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          <!-- Banner Utama (8 Kolom) -->
+          <div class="lg:col-span-8 rounded-2xl overflow-hidden relative min-h-[260px] sm:min-h-[320px] flex items-center bg-gradient-to-r from-primary to-primary-container text-white p-6 sm:p-10 shadow-md">
+            <div class="relative z-10 max-w-lg space-y-3">
+              <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-secondary-container text-primary uppercase tracking-wide">
+                Bangga Buatan Indonesia
+              </span>
+              <h1 class="text-2xl sm:text-4xl font-bold leading-tight">
+                Dukung 10.000+ Pengrajin & UMKM Asli Nusantara
+              </h1>
+              <p class="text-xs sm:text-sm text-white/90 leading-relaxed">
+                Belanja produk autentik daerah dengan jaminan Rekening Bersama (Escrow) PasarKita, ongkir akurat Biteship, dan pembayaran instan.
+              </p>
+              <div class="pt-2">
+                <button onclick="document.getElementById('katalog-heading').scrollIntoView({behavior:'smooth'})" class="px-5 py-2.5 rounded-xl bg-white text-primary font-bold text-xs sm:text-sm hover:bg-surface-container transition-all shadow-sm flex items-center gap-2">
+                  <span>Jelajahi Produk Pilihan</span>
+                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </button>
+              </div>
+            </div>
+            <!-- Latar belakang pola dekoratif -->
+            <div class="absolute right-0 top-0 bottom-0 w-1/2 opacity-15 pointer-events-none flex items-center justify-center">
+              <span class="material-symbols-outlined text-[240px]">loyalty</span>
+            </div>
+          </div>
+
+          <!-- 2 Banner Pendukung (4 Kolom) -->
+          <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-4">
+            <!-- Banner Pendukung 1: Biteship Ongkir -->
+            <div class="flex-1 p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-sm flex flex-col justify-between">
+              <div>
+                <span class="text-[11px] font-bold text-primary uppercase">Promo Ekspedisi</span>
+                <h3 class="font-bold text-on-surface text-sm sm:text-base mt-1">Gratis Ongkir Biteship Se-Jawa</h3>
+                <p class="text-xs text-on-surface-variant mt-1">Kalkulasi tarif otomatis dari JNE, SiCepat, dan J&T Express.</p>
+              </div>
+              <span class="text-xs font-semibold text-primary mt-3 flex items-center gap-1">Cek Tarif di Checkout →</span>
+            </div>
+
+            <!-- Banner Pendukung 2: Escrow Terpercaya -->
+            <div class="flex-1 p-5 rounded-2xl bg-secondary-container/40 border border-secondary/20 shadow-sm flex flex-col justify-between">
+              <div>
+                <span class="text-[11px] font-bold text-secondary uppercase">Jaminan 100% Aman</span>
+                <h3 class="font-bold text-on-surface text-sm sm:text-base mt-1">Rekening Bersama PasarKita</h3>
+                <p class="text-xs text-on-surface-variant mt-1">Dana diteruskan ke penjual hanya setelah barang Anda terima.</p>
+              </div>
+              <span class="text-xs font-semibold text-secondary mt-3 flex items-center gap-1">Pelajari Sistem Escrow →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- D. LAYANAN CEPAT (8 Grid Item Ikon) -->
+        <div class="grid grid-cols-4 sm:grid-cols-8 gap-3 text-center">
+          <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary card-hover cursor-pointer" onclick="resetFilters()">
+            <span class="material-symbols-outlined text-2xl text-primary mb-1">verified</span>
+            <span class="text-[11px] font-semibold text-on-surface block truncate">Produk Ori</span>
+          </div>
+          <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary card-hover cursor-pointer">
+            <span class="material-symbols-outlined text-2xl text-primary mb-1">local_shipping</span>
+            <span class="text-[11px] font-semibold text-on-surface block truncate">Biteship API</span>
+          </div>
+          <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary card-hover cursor-pointer" onclick="navigateTo('seller-dashboard')">
+            <span class="material-symbols-outlined text-2xl text-primary mb-1">store</span>
+            <span class="text-[11px] font-semibold text-on-surface block truncate">Buka Toko</span>
+          </div>
+          <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary card-hover cursor-pointer">
+            <span class="material-symbols-outlined text-2xl text-primary mb-1">security</span>
+            <span class="text-[11px] font-semibold text-on-surface block truncate">Escrow Aman</span>
+          </div>
+          <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary card-hover cursor-pointer">
+            <span class="material-symbols-outlined text-2xl text-primary mb-1">account_balance_wallet</span>
+            <span class="text-[11px] font-semibold text-on-surface block truncate">Midtrans Snap</span>
+          </div>
+          <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary card-hover cursor-pointer">
+            <span class="material-symbols-outlined text-2xl text-primary mb-1">local_mall</span>
+            <span class="text-[11px] font-semibold text-on-surface block truncate">Kuliner Khas</span>
+          </div>
+          <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary card-hover cursor-pointer">
+            <span class="material-symbols-outlined text-2xl text-primary mb-1">handshake</span>
+            <span class="text-[11px] font-semibold text-on-surface block truncate">Bina UMKM</span>
+          </div>
+          <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary card-hover cursor-pointer" onclick="openChatModal()">
+            <span class="material-symbols-outlined text-2xl text-primary mb-1">forum</span>
+            <span class="text-[11px] font-semibold text-on-surface block truncate">Tanya Seller</span>
+          </div>
+        </div>
+
+        <!-- F. FLASH SALE SECTION (Hitung Mundur & Stok Kritis) -->
+        <div class="p-5 sm:p-6 rounded-2xl bg-surface-container-lowest border border-error/30 shadow-sm">
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-outline-variant/30">
+            <div class="flex items-center gap-3">
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-error text-white uppercase tracking-wider flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">bolt</span> Flash Sale
+              </span>
+              <div class="flex items-center gap-1.5 text-xs text-on-surface-variant">
+                <span>Berakhir dalam:</span>
+                <span id="flash-sale-timer" class="font-mono font-bold text-xs bg-on-surface text-white px-2 py-0.5 rounded-md">
+                  04 : 32 : 18
+                </span>
+              </div>
+            </div>
+            <span class="text-xs font-semibold text-error hover:underline cursor-pointer">Lihat Semua Promo →</span>
+          </div>
+
+          <!-- Highlight Promo Madu Sumbawa & Kopi Gayo -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+            <!-- Item Flash Sale 1 -->
+            <div class="p-3 rounded-xl border border-outline-variant/40 hover:border-primary transition-all flex items-center gap-3 bg-surface cursor-pointer" onclick="navigateTo('product-detail', 'prod-6')">
+              <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&auto=format&fit=crop&q=80" class="w-16 h-16 rounded-lg object-cover">
+              <div class="flex-1">
+                <span class="text-[10px] font-bold text-error bg-error-container/60 px-1.5 py-0.2 rounded-full">Diskon 20%</span>
+                <h4 class="text-xs font-semibold text-on-surface line-clamp-1 mt-0.5">Madu Hutan Sumbawa 500ml</h4>
+                <div class="text-sm font-bold text-primary">Rp95.000</div>
+                <div class="w-full bg-surface-container-high h-1.5 rounded-full mt-1.5 overflow-hidden">
+                  <div class="bg-error h-full rounded-full" style="width: 80%"></div>
+                </div>
+                <span class="text-[10px] text-error font-medium">Sisa 6 unit lagi!</span>
+              </div>
+            </div>
+
+            <!-- Item Flash Sale 2 -->
+            <div class="p-3 rounded-xl border border-outline-variant/40 hover:border-primary transition-all flex items-center gap-3 bg-surface cursor-pointer" onclick="navigateTo('product-detail', 'prod-1')">
+              <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=300&auto=format&fit=crop&q=80" class="w-16 h-16 rounded-lg object-cover">
+              <div class="flex-1">
+                <span class="text-[10px] font-bold text-error bg-error-container/60 px-1.5 py-0.2 rounded-full">Diskon 15%</span>
+                <h4 class="text-xs font-semibold text-on-surface line-clamp-1 mt-0.5">Kopi Gayo Single Origin 250g</h4>
+                <div class="text-sm font-bold text-primary">Rp85.000</div>
+                <div class="w-full bg-surface-container-high h-1.5 rounded-full mt-1.5 overflow-hidden">
+                  <div class="bg-primary h-full rounded-full" style="width: 60%"></div>
+                </div>
+                <span class="text-[10px] text-on-surface-variant font-medium">Terjual 342 pcs</span>
+              </div>
+            </div>
+
+            <!-- Item Flash Sale 3 -->
+            <div class="p-3 rounded-xl border border-outline-variant/40 hover:border-primary transition-all flex items-center gap-3 bg-surface cursor-pointer" onclick="navigateTo('product-detail', 'prod-2')">
+              <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300&auto=format&fit=crop&q=80" class="w-16 h-16 rounded-lg object-cover">
+              <div class="flex-1">
+                <span class="text-[10px] font-bold text-error bg-error-container/60 px-1.5 py-0.2 rounded-full">Diskon 16%</span>
+                <h4 class="text-xs font-semibold text-on-surface line-clamp-1 mt-0.5">Tenun Ikat Tradisional NTT</h4>
+                <div class="text-sm font-bold text-primary">Rp350.000</div>
+                <div class="w-full bg-surface-container-high h-1.5 rounded-full mt-1.5 overflow-hidden">
+                  <div class="bg-primary h-full rounded-full" style="width: 45%"></div>
+                </div>
+                <span class="text-[10px] text-on-surface-variant font-medium">Sisa 12 unit</span>
+              </div>
+            </div>
+
+            <!-- Item Flash Sale 4 -->
+            <div class="p-3 rounded-xl border border-outline-variant/40 hover:border-primary transition-all flex items-center gap-3 bg-surface cursor-pointer" onclick="navigateTo('product-detail', 'prod-4')">
+              <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=300&auto=format&fit=crop&q=80" class="w-16 h-16 rounded-lg object-cover">
+              <div class="flex-1">
+                <span class="text-[10px] font-bold text-error bg-error-container/60 px-1.5 py-0.2 rounded-full">Diskon 16%</span>
+                <h4 class="text-xs font-semibold text-on-surface line-clamp-1 mt-0.5">Tas Anyaman Bambu Ramah Lingkungan</h4>
+                <div class="text-sm font-bold text-primary">Rp125.000</div>
+                <div class="w-full bg-surface-container-high h-1.5 rounded-full mt-1.5 overflow-hidden">
+                  <div class="bg-primary h-full rounded-full" style="width: 50%"></div>
+                </div>
+                <span class="text-[10px] text-on-surface-variant font-medium">Terjual 215 pcs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- E & H. KATALOG PRODUK REKOMENDASI (Grid 2 Kolom Mobile, 4 Tablet, 5-6 Desktop) -->
+        <div class="space-y-4 pt-2">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 id="katalog-heading" class="text-headline-sm font-bold text-on-surface">Katalog Produk UMKM Nusantara</h2>
+              <p class="text-xs text-on-surface-variant mt-0.5">Menampilkan produk berkualitas langsung dari pengrajin dan petani lokal terverifikasi</p>
+            </div>
+            
+            <!-- Filter & Pengurutan -->
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-on-surface-variant">Urutkan:</span>
+              <select id="sort-select" class="text-xs font-semibold py-2 px-3 rounded-lg bg-surface-container-lowest border border-outline-variant/40 focus:outline-none focus:border-primary text-on-surface">
+                <option value="terbaru">Terbaru</option>
+                <option value="terlaris">Paling Laris</option>
+                <option value="termurah">Harga Terendah</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Grid Kontainer Produk -->
+          <div id="products-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+            <!-- Diisi secara dinamis oleh app.js -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2. VIEW DETAIL PRODUK -->
+    <section id="view-product-detail" class="view-section hidden">
+      <!-- Diisi secara dinamis oleh app.js -->
+    </section>
+
+    <!-- 3. VIEW KERANJANG BELANJA -->
+    <section id="view-cart" class="view-section hidden">
+      <!-- Diisi secara dinamis oleh app.js -->
+    </section>
+
+    <!-- 4. VIEW CHECKOUT & ONGKIR -->
+    <section id="view-checkout" class="view-section hidden">
+      <!-- Diisi secara dinamis oleh app.js -->
+    </section>
+
+    <!-- 5. VIEW DAFTAR PESANAN & TRACKING -->
+    <section id="view-orders" class="view-section hidden">
+      <!-- Diisi secara dinamis oleh app.js -->
+    </section>
+
+    <!-- 6. VIEW SELLER DASHBOARD -->
+    <section id="view-seller-dashboard" class="view-section hidden">
+      <!-- Diisi secara dinamis oleh app.js -->
+    </section>
+
+    <!-- 7. VIEW ADMIN PANEL -->
+    <section id="view-admin-panel" class="view-section hidden">
+      <!-- Diisi secara dinamis oleh app.js -->
+    </section>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- MODALS & POPUP INTERAKTIF -->
+  <!-- ======================================================== -->
+
+  <!-- Modal Midtrans Snap Sandbox Simulator (F-06) -->
+  <div id="midtrans-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border border-outline-variant/40">
+      <!-- Header Midtrans Snap -->
+      <div class="bg-[#102a45] text-white p-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-amber-400">lock</span>
+          <span class="font-bold text-sm tracking-wide">Midtrans Payment (Sandbox)</span>
+        </div>
+        <button onclick="closeMidtransModal()" class="text-white/80 hover:text-white">✕</button>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <div class="text-center pb-3 border-b border-outline-variant/30">
+          <span class="text-xs text-on-surface-variant block">Total Pembayaran Anda</span>
+          <span id="snap-total-amount" class="text-2xl font-bold text-[#102a45]">Rp0</span>
+          <span class="text-[11px] text-primary font-medium block mt-1">Merchant: PasarKita Escrow Platform</span>
+        </div>
+
+        <h4 class="text-xs font-bold text-on-surface">Pilih Metode Pembayaran:</h4>
+
+        <!-- Opsi Pembayaran Sesuai PRD F-06.1 -->
+        <div class="space-y-2">
+          <!-- GoPay -->
+          <button onclick="simulatePaymentSuccess('gopay')" class="w-full p-3 rounded-xl border border-outline-variant/40 hover:border-primary hover:bg-secondary-container/20 flex items-center justify-between text-xs font-bold text-on-surface transition-all">
+            <span class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-700 font-mono text-[10px]">E-Wallet</span> GoPay / QRIS
+            </span>
+            <span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+          </button>
+
+          <!-- ShopeePay -->
+          <button onclick="simulatePaymentSuccess('shopeepay')" class="w-full p-3 rounded-xl border border-outline-variant/40 hover:border-primary hover:bg-secondary-container/20 flex items-center justify-between text-xs font-bold text-on-surface transition-all">
+            <span class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-orange-100 text-orange-700 font-mono text-[10px]">E-Wallet</span> ShopeePay
+            </span>
+            <span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+          </button>
+
+          <!-- Virtual Account BCA -->
+          <button onclick="simulatePaymentSuccess('bca_va')" class="w-full p-3 rounded-xl border border-outline-variant/40 hover:border-primary hover:bg-secondary-container/20 flex items-center justify-between text-xs font-bold text-on-surface transition-all">
+            <span class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 font-mono text-[10px]">VA</span> Bank BCA Virtual Account
+            </span>
+            <span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+          </button>
+
+          <!-- Virtual Account BRI / BNI -->
+          <button onclick="simulatePaymentSuccess('bri_va')" class="w-full p-3 rounded-xl border border-outline-variant/40 hover:border-primary hover:bg-secondary-container/20 flex items-center justify-between text-xs font-bold text-on-surface transition-all">
+            <span class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 font-mono text-[10px]">VA</span> Bank BRI / BNI Virtual Account
+            </span>
+            <span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+          </button>
+
+          <!-- COD -->
+          <button onclick="simulatePaymentSuccess('cod')" class="w-full p-3 rounded-xl border border-outline-variant/40 hover:border-primary hover:bg-secondary-container/20 flex items-center justify-between text-xs font-bold text-on-surface transition-all">
+            <span class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-mono text-[10px]">COD</span> Bayar di Tempat (COD Biteship)
+            </span>
+            <span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+          </button>
+        </div>
+
+        <p class="text-[10px] text-outline text-center">
+          Mode Sandbox pengujian: Klik salah satu metode di atas untuk mensimulasikan notifikasi Webhook valid.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Chat Real-Time Pembeli-Penjual (F-09) -->
+  <div id="chat-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full h-[520px] flex flex-col shadow-2xl border border-outline-variant/40 overflow-hidden">
+      <!-- Header Chat -->
+      <div class="bg-primary text-white p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined text-xl">store</span>
+          </div>
+          <div>
+            <h4 id="chat-shop-title" class="font-bold text-sm leading-tight">Gayo Highland Coffee</h4>
+            <span class="text-[10px] text-white/80">Online • Membalas dalam hitungan menit</span>
+          </div>
+        </div>
+        <button onclick="closeChatModal()" class="text-white/80 hover:text-white">✕</button>
+      </div>
+
+      <!-- Pesan Container -->
+      <div id="chat-messages-container" class="flex-1 p-4 overflow-y-auto space-y-3 bg-surface-container-low">
+        <!-- Diisi dinamis oleh app.js -->
+      </div>
+
+      <!-- Input Chat -->
+      <div class="p-3 bg-white border-t border-outline-variant/30 flex items-center gap-2">
+        <input id="chat-input-text" type="text" placeholder="Tulis pertanyaan seputar produk atau pengiriman..." class="flex-1 px-3 py-2 text-xs rounded-xl bg-surface-container-low border border-outline-variant/50 focus:outline-none focus:border-primary text-on-surface" onkeypress="if(event.key==='Enter') sendChatMessage()">
+        <button onclick="sendChatMessage()" class="p-2 rounded-xl bg-primary text-white hover:bg-primary-container">
+          <span class="material-symbols-outlined text-lg">send</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifikasi Ringan -->
+  <div id="toast-notification" class="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-lg text-white font-medium transition-all duration-300 transform translate-y-12 opacity-0 pointer-events-none">
+    <span id="toast-icon" class="material-symbols-outlined text-xl">check_circle</span>
+    <span id="toast-text" class="text-xs">Aksi berhasil dilakukan</span>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- FOOTER MARKETPLACE -->
+  <!-- ======================================================== -->
+  <footer class="bg-surface-container-low border-t border-outline-variant/40 mt-12 py-10 text-xs text-on-surface-variant">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
+            <span class="material-symbols-outlined text-lg">storefront</span>
+          </div>
+          <span class="text-lg font-bold text-primary">PasarKita</span>
+        </div>
+        <p class="leading-relaxed">
+          Platform marketplace pemberdayaan produk UMKM Indonesia terintegrasi dengan Rekening Bersama (Escrow), kurir Biteship, dan Midtrans Snap Sandbox.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-on-surface mb-3">Jelajahi Kategori</h4>
+        <ul class="space-y-2">
+          <li><a href="javascript:void(0)" onclick="resetFilters()" class="hover:text-primary">Kopi Nusantara Gayo & Flores</a></li>
+          <li><a href="javascript:void(0)" onclick="resetFilters()" class="hover:text-primary">Kain Tenun Tradisional NTT</a></li>
+          <li><a href="javascript:void(0)" onclick="resetFilters()" class="hover:text-primary">Batik Tulis Sutra Solo</a></li>
+          <li><a href="javascript:void(0)" onclick="resetFilters()" class="hover:text-primary">Madu Hutan Sumbawa Organik</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-on-surface mb-3">Ekosistem Pengembang</h4>
+        <ul class="space-y-2">
+          <li><span>Tugas Pengembangan Website Marketplace</span></li>
+          <li><span>Sistem Rekening Bersama Append-Only</span></li>
+          <li><span>Integrasi Biteship Rates & Tracking API</span></li>
+          <li><span>Webhook SHA-512 Midtrans Idempoten</span></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-on-surface mb-3">Jaminan Keamanan</h4>
+        <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 space-y-1">
+          <p class="font-semibold text-primary flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">verified_user</span> 100% Escrow Protected
+          </p>
+          <p class="text-[11px] text-outline">
+            Dana pembeli aman sampai paket diterima dan terkonfirmasi.
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 mt-8 border-t border-outline-variant/20 text-center text-[11px] text-outline">
+      © 2026 PasarKita. Seluruh hak cipta dilindungi. Dibangun untuk simulasi marketplace produk UMKM Indonesia.
+    </div>
+  </footer>
+
+  <!-- Script Engine -->
+  <script src="app.js"></script>
+</body>
+</html>

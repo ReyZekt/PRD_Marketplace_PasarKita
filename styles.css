@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+/* CSS Variables berdasarkan Skill Desain PasarKita */
+:root {
+  --color-primary: #006B2C;
+  --color-primary-container: #00873A;
+  --color-secondary: #006D30;
+  --color-secondary-container: #92F5A4;
+  --color-secondary-fixed: #95F8A7;
+  --color-tertiary: #466252;
+  --color-surface: #FAF8FF;
+  --color-surface-container-lowest: #FFFFFF;
+  --color-surface-container-low: #F2F3FF;
+  --color-surface-container: #EAEDFF;
+  --color-surface-container-high: #E2E7FF;
+  --color-on-surface: #131B2E;
+  --color-on-surface-variant: #3E4A3D;
+  --color-outline: #6E7B6C;
+  --color-outline-variant: #BDCABA;
+  --color-error: #BA1A1A;
+  --color-error-container: #FFDAD6;
+  --color-amber: #FFB800;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Material Symbols Outlined */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+  line-height: 1;
+  display: inline-block;
+  user-select: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface-container-low);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-outline);
+}
+
+/* Animasi & Transisi */
+.transition-smooth {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px -4px rgba(19, 27, 46, 0.08);
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+  background: rgba(19, 27, 46, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+/* Badge Pulse */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s infinite ease-in-out;
+}
